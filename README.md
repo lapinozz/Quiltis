@@ -5,7 +5,7 @@ Quiltis is a library implementing an image synthetizing algorithm known as _imag
 It works by selecting blocks from the original image and placing them next to each other with a little bit of overlap. Then it finds where to cut the block in that overlap so that the seam is the least obvious.
 This is done by substracting each overlapping pixel and taking the magnitude of the result to create an error map and then running A* pathfinding to find the minimum error path. The pixels on the other side of that path are simply erased.
 
-To get better result we can select try to select a that already has a low average error in the overlapping part. In the original paper the application was quite slow because it has to check each block position from the original picture to find the optimal one. I used a shader to speed up this process, which lead to ~x8 speed gain. This optimization in addition to the general increase in speed of computers since the paper came out means that the we can now generate bigger image in less than a second, compared to the original results that were significantly smaller and took multiple minutes to generate.
+To get better result we can try to select a block that already has a low average error in the overlapping part. In the original paper the application was quite slow because it has to check each block position from the original picture to find the optimal one. I used a shader to speed up this process, which lead to ~x8 speed gain. This optimization in addition to the general increase in speed of computers since the paper came out means that the we can now generate bigger image in less than a second, compared to the original results that were significantly smaller and took multiple minutes to generate.
 
 ## App
 
