@@ -25,7 +25,7 @@ int main()
     std::string texturePath;
     sf::Image sourceImg;
     sf::Texture sourceTexture;
-    bool useSquareBlocks{true};
+    bool useSquareBlocks{ true };
     float overlapPercentage = 1.f / 6.f;
 
     Quiltis::Settings settings;
@@ -96,7 +96,7 @@ int main()
 
                     const auto showVec = [&](auto name, auto& vec, auto speed, auto min, auto max)
                     {
-                        if(useSquareBlocks)
+                        if (useSquareBlocks)
                         {
                             ImGui::DragInt(name, &vec.x, speed, min, max);
                             vec.y = vec.x;
@@ -180,16 +180,18 @@ int main()
 
                 sf::Vector2f area{ max.x - min.x, max.y - min.y };
 
-                const auto scale = std::min({ area.x / resultTexture.getSize().x, area.y / resultTexture.getSize().y, 1.f });
-
-                sf::Sprite sprite{ resultTexture };
-                sprite.scale({ scale, scale });
-                ImGui::Image(sprite);
+                if (resultTexture.getSize().x > 0 && resultTexture.getSize().y > 0)
+                {
+                    const auto scale = std::min({ area.x / resultTexture.getSize().x, area.y / resultTexture.getSize().y, 1.f });
+                    sf::Sprite sprite{ resultTexture };
+                    sprite.scale({ scale, scale });
+                    ImGui::Image(sprite);
+                }
             }
             ImGui::EndChild();
         }
         ImGui::End();
-        ImGui::PopStyleVar(2);
+        ImGui::PopStyleVar(1);
 
         if (isDirty)
         {
