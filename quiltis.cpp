@@ -460,6 +460,11 @@ sf::Image quilt(const sf::Image& sourceImage, const Settings& settings)
         return {};
     }
 
+    if (settings.makeTileable && (quiltSize.x < 2 || quiltSize.y < 2))
+    {
+        return {};
+    }
+
     if (blockSize.x >= sourceImage.getSize().x || blockSize.y >= sourceImage.getSize().y)
     {
         return {};
@@ -489,16 +494,35 @@ sf::Image quilt(const sf::Image& sourceImage, const Settings& settings)
         seamsImage.resize(quiltImage.getSize(), sf::Color::Transparent);
     }
 
+    const bool needSources = settings.makeTileable;
+
+    std::vector<sf::Vector2i> blockSources;
+    if (needSources)
+    {
+        blockSources.reserve(quiltSize.x * quiltSize.y);
+    }
+
     std::default_random_engine rng(settings.seed);
 
-    for (int x = 0; x < quiltSize.x; x++)
+    for (int y = 0; y < quiltSize.y; y++)
     {
-        for (int y = 0; y < quiltSize.y; y++)
+        for (int x = 0; x < quiltSize.x; x++)
         {
             const auto blockPos = (blockSize - overlap).componentWiseMul({ x, y });
 
             sf::Vector2i srcPos{};
-            if ((x == 0 && y == 0) || std::get_if<RandomBlockSelection>(&settings.blockSelection))
+            if (settings.makeTileable && (x == quiltSize.x - 1 || y == quiltSize.y - 1))
+            {
+                if (x == quiltSize.x - 1)
+                {
+                    srcPos = blockSources[y * quiltSize.x];
+                }
+                else
+                {
+                    srcPos = blockSources[x];
+                }
+            }
+            else if ((x == 0 && y == 0) || std::get_if<RandomBlockSelection>(&settings.blockSelection))
             {
                 srcPos = selectRandomBlock(rng, sourceImage, blockSize);
             }
@@ -512,6 +536,11 @@ sf::Image quilt(const sf::Image& sourceImage, const Settings& settings)
                 {
                     srcPos = selectBestBlockCpu(*select, rng, sourceImage, quiltImage, blockSize, blockPos, overlap);
                 }
+            }
+
+            if (needSources)
+            {
+                blockSources.push_back(srcPos);
             }
 
             sf::Image blockImage{ sf::Vector2u(blockSize) };
@@ -578,6 +607,14 @@ sf::Image quilt(const sf::Image& sourceImage, const Settings& settings)
     if (settings.showSeams)
     {
         quiltImage.copy(seamsImage, {}, {}, true);
+    }
+
+    if (settings.makeTileable)
+    {
+        const auto temp = std::move(quiltImage);
+        const auto newQuiltDimension = sf::Vector2i(quiltImage.getSize()) - blockSize;
+        quiltImage.resize(sf::Vector2u(newQuiltDimension));
+        quiltImage.copy(temp, {}, { blockSize / 2, newQuiltDimension });
     }
 
     return quiltImage;

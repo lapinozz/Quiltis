@@ -44,6 +44,7 @@ namespace Quiltis
         bool showSeams = false;
         bool blendSeams = false;
         bool useLogCost = true;
+        bool makeTileable = false;
 
         bool useGpuAcceleration = true;
 

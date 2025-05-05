@@ -153,6 +153,7 @@ int main()
                     isDirty = isDirty || ImGui::Checkbox("Blend Seams", &settings.blendSeams);
                     isDirty = isDirty || ImGui::Checkbox("Cut", &settings.doCut);
                     isDirty = isDirty || ImGui::Checkbox("Log Cost", &settings.useLogCost);
+                    isDirty = isDirty || ImGui::Checkbox("Make Tileable", &settings.makeTileable);
                     isDirty = isDirty || ImGui::Checkbox("Use Gpu", &settings.useGpuAcceleration);
 
 
@@ -180,12 +181,23 @@ int main()
 
                 sf::Vector2f area{ max.x - min.x, max.y - min.y };
 
-                if (resultTexture.getSize().x > 0 && resultTexture.getSize().y > 0)
+                const auto resultSize = resultTexture.getSize();
+                if (resultSize.x > 0 && resultSize.y > 0)
                 {
-                    const auto scale = std::min({ area.x / resultTexture.getSize().x, area.y / resultTexture.getSize().y, 1.f });
+                    const auto scale = std::min({ area.x / resultSize.x, area.y / resultSize.y, 1.f });
                     sf::Sprite sprite{ resultTexture };
                     sprite.scale({ scale, scale });
                     ImGui::Image(sprite);
+
+                    if (settings.makeTileable)
+                    {
+                        ImGui::SetCursorPos({ resultSize.x * scale, 0.f });
+                        ImGui::Image(sprite);
+                        ImGui::SetCursorPos({ 0.f, resultSize.y * scale });
+                        ImGui::Image(sprite);
+                        ImGui::SetCursorPos({ resultSize.x * scale, resultSize.y * scale });
+                        ImGui::Image(sprite);
+                    }
                 }
             }
             ImGui::EndChild();
@@ -213,7 +225,6 @@ int main()
                 std::chrono::steady_clock::time_point endTime = std::chrono::steady_clock::now();
 
                 resultTexture.loadFromImage(resultImg);
-
 
                 std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() << "[ms]" << std::endl;
             }
