@@ -19,6 +19,14 @@ On the right there's the resulting image, made of 10 by 10 blocks
 You can also see where the seams are generated
 ![](examples/rocks-seams.png)
 
+## Tiling
+
+By selecting the same blocks on opposite edges of the image we make the result tileable
+
+![](examples/tiling-explanation.png)
+
+![](examples/wall-tiling.png)
+
 ## Library
 
 The library depends on SFML.
