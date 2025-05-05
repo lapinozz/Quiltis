@@ -42,6 +42,7 @@ namespace Quiltis
 
         bool doCut = true;
         bool showSeams = false;
+        bool showDifference = false;
         bool blendSeams = false;
         bool useLogCost = true;
         bool makeTileable = false;

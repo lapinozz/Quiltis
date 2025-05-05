@@ -553,6 +553,18 @@ sf::Image quilt(const sf::Image& sourceImage, const Settings& settings)
             {
                 std::vector<float> difference = imageDifference(quiltImage, blockImage, { blockPos, overlap });
 
+                if(settings.showDifference)
+                {
+                    const auto maxDifference = *std::max_element(difference.begin(), difference.end());
+                    for (int x = 0; x < difference.size(); x++)
+                    {
+                        const auto diff = difference[x] / maxDifference;
+                        const auto color = sf::Color(255 * diff, 255 * diff, 255 * diff, 255);
+                        const auto pos = sf::Vector2u(x % overlap.x, x / overlap.x);
+                        blockImage.setPixel(pos, color);
+                    }
+                }
+
                 if (settings.useLogCost)
                 {
                     for (auto& cost : difference)

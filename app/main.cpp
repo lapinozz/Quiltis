@@ -150,6 +150,7 @@ int main()
                     isDirty = isDirty || ImGui::IsItemDeactivatedAfterEdit();
 
                     isDirty = isDirty || ImGui::Checkbox("Show Seams", &settings.showSeams);
+                    isDirty = isDirty || ImGui::Checkbox("Show Difference", &settings.showDifference);
                     isDirty = isDirty || ImGui::Checkbox("Blend Seams", &settings.blendSeams);
                     isDirty = isDirty || ImGui::Checkbox("Cut", &settings.doCut);
                     isDirty = isDirty || ImGui::Checkbox("Log Cost", &settings.useLogCost);
