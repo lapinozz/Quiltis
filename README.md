@@ -2,7 +2,7 @@
 
 Quiltis is a library implementing an image synthetizing algorithm known as _image quilting_, as [presented in this 2001 paper](https://people.eecs.berkeley.edu/~efros/research/quilting/quilting.pdf).
 
-It works by selecting blocks from the original image and placing them next to each other with a little bit of overlap. Then it finds where to cut the block in that overlap so that the seam is the least obvious.
+It works by selecting blocks from the original image and placing them next to each other with a little bit of overlap. Then it finds where to cut the block in that overlap so that the seam is the least obvious.  
 This is done by substracting each overlapping pixel and taking the magnitude of the result to create an error map and then running A* pathfinding to find the minimum error path. The pixels on the other side of that path are simply erased.
 
 ![](examples/explanation.png)
@@ -11,9 +11,9 @@ To get better result we can try to select a block that already has a low average
 
 ## App
 
-The library comes with a simple app, using imgui
-On the left you can see the original image and the paramters
-On the right there's the resulting image, made of 10 by 10 blocks
+The library comes with a simple app, using imgui  
+On the left you can see the original image and the paramters  
+On the right there's the resulting image, made of 10 by 10 blocks  
 ![](examples/rocks.png)
 
 You can also see where the seams are generated
@@ -29,7 +29,7 @@ By selecting the same blocks on opposite edges of the image we make the result t
 
 ## Library
 
-The library depends on SFML.
+The library depends on SFML.  
 You can setup a simple project using a cmake file such as:
 
 ```cmake
