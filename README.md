@@ -58,7 +58,7 @@ add_executable(app main.cpp)
 target_compile_features(app PRIVATE cxx_std_20)
 set_property(TARGET app PROPERTY CXX_STANDARD 20)
 
-target_link_libraries(app PRIVATE Quiltis::Quiltis nfd SFML::Graphics)
+target_link_libraries(app PRIVATE Quiltis::Quiltis SFML::Graphics)
 
 ```
 
